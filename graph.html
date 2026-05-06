@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<title>PSUP TreeDB: Statistical Graphs</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="styles/graph.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script>
+/* Intercept Plotly.newPlot to force responsive:true on every chart */
+document.addEventListener('DOMContentLoaded', function() {
+  if (window.Plotly) {
+    var _orig = Plotly.newPlot.bind(Plotly);
+    Plotly.newPlot = function(el, data, layout, config) {
+      layout = Object.assign({ autosize: true }, layout || {});
+      config = Object.assign({ responsive: true }, config || {});
+      return _orig(el, data, layout, config);
+    };
+  }
+});
+</script>
+
+<style>
+  :root {
+    --green-dark:   #1b5e20;
+    --green-mid:    #2e7d32;
+    --green-light:  #43a047;
+    --green-accent: #66bb6a;
+    --header-h:     130px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Bai Jamjuree", sans-serif;
+    margin: 0;
+  }
+  body { background: #f4f8f4; }
+
+  /* ===== Top Bar ===== */
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    box-shadow: 0 3px 20px rgba(0,0,0,0.18);
+  }
+  .top-bar-inner {
+    max-width: 1300px; margin: auto;
+    display: flex; align-items: center;
+    padding: 0 8px; min-height: var(--header-h); gap: 12px;
+  }
+  .menu-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.30);
+    border-radius: 10px; color: #fff; font-size: 1.5rem;
+    width: 48px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.2s, transform 0.15s; flex-shrink: 0;
+  }
+  .menu-btn:hover { background: rgba(255,255,255,0.28); transform: scale(1.07); }
+  .tree-badge {
+    width: 58px; height: 58px; background: rgba(255,255,255,0.18);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.35);
+  }
+  .title-block { flex: 1; text-align: center; padding: 10px 0; }
+  .title-block h2 {
+    color: #fff; font-size: 1.55rem; font-weight: 700;
+    letter-spacing: 0.5px; text-shadow: 0 2px 8px rgba(0,0,0,0.18); margin-bottom: 4px;
+  }
+  .title-block p { color: rgba(255,255,255,0.88); font-size: 0.82rem; font-weight: 300; margin: 0; }
+  .leaf-strip {
+    height: 5px;
+    background: linear-gradient(90deg, var(--green-accent), #a5d6a7, var(--green-accent));
+  }
+
+  /* ===== Sidebar ===== */
+  #mySidebar {
+    display: none; position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 9999; width: 280px;
+    background: var(--green-dark);
+    box-shadow: 4px 0 30px rgba(0,0,0,0.25);
+    animation: slideInLeft 0.25s ease;
+    overflow-y: auto; flex-direction: column;
+  }
+  @keyframes slideInLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+  }
+  .sidebar-header {
+    background: rgba(0,0,0,0.25); padding: 20px 20px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sidebar-logo { font-size: 1.8rem; }
+  .sidebar-title { color: #fff; font-weight: 700; font-size: 1rem; line-height: 1.2; }
+  .sidebar-subtitle { color: rgba(255,255,255,0.6); font-size: 0.72rem; font-weight: 300; }
+  .sidebar-close {
+    display: block; background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.70); padding: 12px 20px;
+    font-size: 0.82rem; cursor: pointer; border: none;
+    text-align: left; width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    letter-spacing: 0.5px; transition: background 0.18s, color 0.18s; text-decoration: none;
+  }
+  .sidebar-close:hover { background: rgba(255,255,255,0.15); color: #fff; }
+  .sidebar-section {
+    padding: 12px 0 4px 20px;
+    color: rgba(255,255,255,0.40); font-size: 0.65rem;
+    letter-spacing: 1.2px; text-transform: uppercase;
+  }
+  .sidebar-nav a {
+    display: flex; align-items: center; gap: 12px;
+    color: rgba(255,255,255,0.82); padding: 13px 20px;
+    text-decoration: none; font-size: 0.95rem; font-weight: 400;
+    border-left: 3px solid transparent; transition: all 0.18s;
+  }
+  .sidebar-nav a:hover, .sidebar-nav a.active {
+    background: rgba(255,255,255,0.10); color: #fff;
+    border-left-color: var(--green-accent);
+  }
+  .sidebar-nav a .nav-icon { font-size: 1.1rem; width: 24px; text-align: center; }
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.35); z-index: 9998;
+  }
+
+  /* ===== Content ===== */
+  .main-content {
+    margin-top: calc(var(--header-h) + 24px);
+    padding: 0 20px 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chart-section {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(30,80,30,0.10);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .chart-section h3 {
+    color: var(--green-mid);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e8f5e9;
+  }
+
+  /* Plotly responsive fix */
+  .chart-box {
+    width: 100% !important;
+    min-height: 350px;
+  }
+  .chart-box .plotly-graph-div,
+  .chart-box .js-plotly-plot {
+    width: 100% !important;
+  }
+
+  @media (max-width: 700px) {
+    :root { --header-h: 110px; }
+    .title-block h2 { font-size: 1.15rem; }
+    .title-block p { display: none; }
+    .tree-badge { width: 44px; height: 44px; font-size: 1.6rem; }
+  }
+</style>
+</head>
+
+<body data-page="graph">
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="w3_close()"></div>
+
+<!-- Sidebar -->
+<nav id="mySidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">🌳</div>
+    <div>
+      <div class="sidebar-title">PSUP TreeDB</div>
+      <div class="sidebar-subtitle">ม.อ. วิทยาเขตภูเก็ต</div>
+    </div>
+  </div>
+  <a href="javascript:void(0)" onclick="w3_close()" class="sidebar-close">✕ &nbsp; ปิดเมนู</a>
+  <div class="sidebar-section">เมนูหลัก</div>
+  <div class="sidebar-nav">
+    <a href="index.html"><span class="nav-icon">🏠</span> Home</a>
+    <a href="webmap.html"><span class="nav-icon">🗺️</span> Map</a>
+    <a href="diy_6000000000.html"><span class="nav-icon">📋</span> Table</a>
+    <a href="plant_catalog.html"><span class="nav-icon">📖</span> Plant Catalog</a>
+    <a href="graph.html" class="active"><span class="nav-icon">📊</span> Graph</a>
+    <a href="about.html"><span class="nav-icon">ℹ️</span> About</a>
+  </div>
+</nav>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <button class="menu-btn" onclick="w3_open()" title="เปิดเมนู">☰</button>
+    <div class="tree-badge">📊</div>
+    <div class="title-block">
+      <h2>PSUP TreeDB: Statistical Graphs</h2>
+      <p>การแสดงผลข้อมูลในรูปแบบกราฟเพื่อวิเคราะห์สถิติของข้อมูลต้นไม้และคาร์บอนในพื้นที่ศึกษา</p>
+    </div>
+  </div>
+  <div class="leaf-strip"></div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+  <div class="chart-section">
+    <h3>📊 Carbon Stock &amp; Sequestration</h3>
+    <div id="chart1" class="chart-box"></div>
+  </div>
+
+  <div class="chart-section">
+    <h3>📊 Species Distribution</h3>
+    <div id="chart2" class="chart-box"></div>
+  </div>
+
+  <div class="chart-section">
+    <h3>📊 Forest Type Distribution</h3>
+    <div id="chart3" class="chart-box"></div>
+  </div>
+
+  <div class="chart-section">
+    <h3>📊 DBH Distribution</h3>
+    <div id="chart4" class="chart-box"></div>
+  </div>
+
+  <div class="chart-section">
+    <h3>📊 Tree Height Distribution</h3>
+    <div id="chart5" class="chart-box"></div>
+  </div>
+
+</div>
+
+<script src="scripts/graph_1.js"></script>
+<script src="scripts/graph_2.js"></script>
+<script src="scripts/graph_3.js"></script>
+<script src="scripts/graph_4.js"></script>
+<script src="scripts/graph_5.js"></script>
+
+<script>
+/* ── Plotly responsive resize ── */
+function resizeAllCharts() {
+  ['chart1','chart2','chart3','chart4','chart5'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && el.data) { Plotly.relayout(el, { autosize: true }); }
+  });
+}
+
+window.addEventListener('resize', function() {
+  clearTimeout(window._resizeTimer);
+  window._resizeTimer = setTimeout(resizeAllCharts, 150);
+});
+
+/* Force autosize after scripts load */
+window.addEventListener('load', function() {
+  /* Patch: relayout every plotly div to autosize=true & responsive */
+  setTimeout(function() {
+    document.querySelectorAll('.js-plotly-plot').forEach(function(el) {
+      Plotly.relayout(el, { autosize: true });
+    });
+  }, 300);
+  resizeAllCharts();
+});
+
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "flex";
+  document.getElementById("sidebarOverlay").style.display = "block";
+}
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("sidebarOverlay").style.display = "none";
+}
+</script>
+</body>
+</html>

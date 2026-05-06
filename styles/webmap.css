@@ -1,0 +1,170 @@
+/* map */
+#trees-map { height: 750px; width: 100%; border-radius: 12px; }
+body,h1,h2,h3,h4,h5,h6{
+    font-family:"Bai Jamjuree",sans-serif;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    background:#ffffff;
+}
+
+/* map */
+#trees-map{
+    width:auto;
+    height:auto;
+    margin:30px auto;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 6px 25px rgba(0,0,0,.08);
+}
+
+/* กล่องหัวด้านบน */
+.w3-card,
+.w3-card-4,
+.w3-panel,
+.w3-white{
+    box-shadow: none !important;
+}
+/* กล่องหัวด้านบน ให้กว้างเต็มจอพอดี */
+
+.w3-top{
+    width:100%;
+}
+
+.w3-top > div{
+    max-width:100% !important;   /* ยกเลิก 1200px เดิม */
+    width:100%;
+    margin:0;
+}
+
+/* ถ้าอยากให้ชิดขอบเลย */
+.w3-white.w3-xlarge{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.w3-bar-block .w3-bar-item{
+  padding:20px;
+}
+
+
+/* แถบบน */
+.topbar{
+    width:100%;
+    height:70px;
+    background:#f7f7f7;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    font-size:20px;
+    font-weight:500;
+}
+
+.topbar .menu-btn{
+    position:absolute;
+    left:30px;
+    font-size:28px;
+    cursor:pointer;
+}
+
+/* กล่อง map */
+#trees-map{
+    width:95%;
+    height:78vh;
+    margin:25px auto;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 6px 25px rgba(0,0,0,0.08);
+}
+
+
+
+/* popup */
+.popup-card{
+    width:340px;
+    min-width:340px;
+    font-family:"Bai Jamjuree", sans-serif;
+    color:#222;
+}
+.popup-header { font-weight: bold; color: #1b5e20; border-bottom: 2px solid #81c784; margin-bottom: 8px; }
+.stat-label { font-size: 0.9em; color: #666; }
+.stat-value { font-weight: 600; float: right; }
+.stat-label.co2 { color: #27762c; font-size: 1.1em;}
+.stat-value.co2 { color: #07350a; font-weight: 600; float: right; }
+
+.popup-images{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr); 
+    gap:6px;
+    margin-top:10px;
+}
+
+.popup-images img{
+    width:100%;
+    height:70px; 
+    object-fit:cover;
+    border-radius:8px;
+    display:block;
+}
+
+/* footer */
+.footer-box{
+    width:92%;
+    margin:30px auto;
+    background:#e9e9e9;
+    padding:40px;
+    border-radius:14px;
+    text-align:center;
+    color:#333;
+}
+
+.custom-filter{
+    width:280px !important;
+    height:auto !important;
+    min-height:unset !important;
+    max-height:none !important;
+
+    padding:10px !important;
+    margin:0 !important;
+
+    background:white;
+    border-radius:14px;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+/* ลบพื้นที่ว่างของ leaflet */
+.leaflet-control{
+    margin-bottom:10px !important;
+}
+
+.leaflet-popup-content{
+    margin:12px 14px !important;
+    width:auto !important;
+}
+/* label */
+.custom-filter label{
+    display:block;
+    margin:6px 0 3px 0 !important;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* dropdown */
+.custom-filter select{
+    width:100%;
+    padding:6px;
+    height:34px;
+    margin:0;
+}
+
+/* button */
+.custom-filter button{
+    width:100%;
+    margin-top:8px;
+    padding:8px;
+}
+

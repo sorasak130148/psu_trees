@@ -1,0 +1,94 @@
+/* map */
+#trees-map { height: 750px; width: 100%; border-radius: 12px; }
+body,h1,h2,h3,h4,h5,h6{
+    font-family:"Bai Jamjuree",sans-serif;
+}
+
+html,body{
+    margin:0;
+    padding:0;
+    background:#ffffff;
+}
+
+/* map */
+#trees-map{
+    width:auto;
+    height:auto;
+    margin:30px auto;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 6px 25px rgba(0,0,0,.08);
+}
+
+/* กล่องหัวด้านบน */
+.w3-card,
+.w3-card-4,
+.w3-panel,
+.w3-white{
+    box-shadow: none !important;
+}
+/* กล่องหัวด้านบน ให้กว้างเต็มจอพอดี */
+
+.w3-top{
+    width:100%;
+}
+
+.w3-top > div{
+    max-width:100% !important;   /* ยกเลิก 1200px เดิม */
+    width:100%;
+    margin:0;
+}
+
+/* ถ้าอยากให้ชิดขอบเลย */
+.w3-white.w3-xlarge{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.w3-bar-block .w3-bar-item{
+  padding:20px;
+}
+
+
+/* แถบบน */
+.topbar{
+    width:100%;
+    height:70px;
+    background:#f7f7f7;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    font-size:20px;
+    font-weight:500;
+}
+
+.topbar .menu-btn{
+    position:absolute;
+    left:30px;
+    font-size:28px;
+    cursor:pointer;
+}
+
+.dashboard {
+    margin-top: 120px;
+    padding: 20px;
+
+    height: 85vh;
+    overflow-y: auto;   /* 🔥 เลื่อนแนวตั้ง */
+}
+
+.chart-box {
+    width: 100%;
+    height: 500px;
+    margin-bottom: 50px;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.spacer {
+    height: 140px;
+}

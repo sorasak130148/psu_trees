@@ -1,0 +1,225 @@
+/* datatable.css - Custom styles for the trees DataTable */
+body,h1,h2,h3,h4,h5,h6{
+  font-family:"Bai Jamjuree", sans-serif;
+  margin:0;
+  padding:0;
+}
+
+/* กล่องหัวด้านบน */
+.w3-card,
+.w3-card-4,
+.w3-panel,
+.w3-white{
+    box-shadow: none !important;
+}
+/* กล่องหัวด้านบน ให้กว้างเต็มจอพอดี */
+
+.w3-top{
+    width:100%;
+}
+
+.w3-top > div{
+    max-width:100% !important;   /* ยกเลิก 1200px เดิม */
+    width:100%;
+    margin:0;
+}
+
+/* ถ้าอยากให้ชิดขอบเลย */
+.w3-white.w3-xlarge{
+    padding-left:20px;
+    padding-right:20px;
+}
+
+.w3-bar-block .w3-bar-item{
+  padding:20px;
+}
+
+/* ป้องกัน header ทับเนื้อหา */
+.main-content{
+  margin-top:170px;
+  padding:20px;
+}
+
+/* ตาราง */
+table#trees-table{
+  width:100%;
+  border-collapse:collapse;
+  overflow-x:auto;
+}
+
+/* แถวสลับสี */
+table#trees-table tr:nth-child(even){
+  background:#e8f5e9;
+}
+
+table#trees-table tr:nth-child(odd){
+  background:#f7f8f5;
+}
+
+table#trees-table tr:hover{
+  background:#c8e6c9;
+  transition:0.3s;
+}
+
+/* หัวตาราง */
+table#trees-table th{
+  padding:12px;
+  background:#2e7d32;
+  color:#fff;
+  font-weight:bold;
+  text-align:center;
+}
+
+/* ช่องข้อมูล */
+table#trees-table td{
+  padding:10px;
+  vertical-align:middle;
+}
+
+/* โมดัล */
+.modal{
+  display:none;
+  position:fixed;
+  z-index:9999;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  overflow:auto;
+  background:rgba(0,0,0,0.5);
+}
+
+.modal-content{
+  background:#fff;
+  margin:8% auto;
+  padding:15px;
+  border:2px solid #2e7d32;
+  border-radius:8px;
+  width:60%;
+  max-width:520px;
+}
+
+.close{
+  color:#2e7d32;
+  float:right;
+  font-size:28px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.close:hover{
+  color:#000;
+}
+
+/* -badge */
+.tree-code-badge{
+  cursor:pointer;
+  display:inline-block;
+  padding:3px 8px;
+  background:#345334;
+  color:#fff;
+  font-weight:bold;
+  border-radius:6px;
+  font-size:.95em;
+  letter-spacing:1px;
+  box-shadow:0 2px 4px rgba(0,0,0,.2);
+}
+
+.tree-code-badge:hover{
+  background:#2e7d32;
+  box-shadow:0 4px 8px rgba(0,0,0,.3);
+}
+
+/* ตารางรายละเอียด */
+.details-table{
+  width:100%;
+}
+
+.details-table tr{
+  border-bottom:1px solid #ced0ce;
+}
+
+.details-table th{
+  width:45%;
+  padding:5px;
+  text-align:left;
+  background:#dadeda;
+  color:#111;
+}
+
+.details-table td{
+  width:55%;
+  padding:5px 10px;
+  background:#f7f8f5;
+}
+
+/*  responsiveness */
+@media screen and (max-width:992px){
+
+  .main-content{
+    margin-top:210px;
+  }
+
+  #trees-table th,
+  #trees-table td{
+    font-size:14px;
+    white-space:nowrap;
+  }
+
+}
+
+/*  responsiveness */
+@media screen and (max-width:768px){
+
+  .main-content{
+    margin-top:240px;
+    padding:10px;
+  }
+
+  .modal-content{
+    width:95%;
+    margin:20% auto;
+  }
+
+}
+
+/*  responsiveness */
+@media screen and (max-width:600px){
+
+  table#trees-table thead{
+    display:none;
+  }
+
+  table#trees-table,
+  table#trees-table tbody,
+  table#trees-table tr,
+  table#trees-table td{
+    display:block;
+    width:100%;
+  }
+
+  table#trees-table tr{
+    margin-bottom:15px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:10px;
+    background:#fff;
+  }
+
+  table#trees-table td{
+    text-align:right;
+    padding-left:50%;
+    position:relative;
+    border:none;
+  }
+
+  table#trees-table td::before{
+    content:attr(data-title);
+    position:absolute;
+    left:10px;
+    top:10px;
+    font-weight:bold;
+    text-align:left;
+  }
+
+}
