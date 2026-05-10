@@ -160,9 +160,9 @@ const plantCatalog =[
     type: "ป่าเบญจพรรณ"
   },
   {
-    name_th: "STR002",
+    name_th: "ตะเคียน",
     name_en: "Takian",
-    species_id: "SP020",
+    species_id: "STR002",
     scientific_name: "Hopea odorata Roxb.",
     local_name: "ตะเคียนทอง",
     type: "ป่าดิบชื้น"

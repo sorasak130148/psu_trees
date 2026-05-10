@@ -49,8 +49,8 @@
         "BGB": 100.72,
         "TotalBiomass_kg": 473.76,
         "CarbonStock_kgC": 227.73,
-        "Sequestration_kgCO2e": 835.03,
-        "Sequestration_tCO2e": 0.84
+        "GHGSequestration_kgCO2e": 835.03,
+        "GHGSequestration_tCO2e": 0.84
         }];
         */
         // 1. Define Base Maps
@@ -130,6 +130,8 @@
             "OpenStreetMap": osm
         };
 
+        var currentBasemap = esriImagery; // Track current basemap for switching
+
         var speciesLayers = {};// Key: species name_en, Value: L.layerGroup()
 
 // loop through treesData to create markers and add to respective species layer groups
@@ -184,11 +186,11 @@
                     </div>
 
                     <div class="stat-label co2">ปริมาณก๊าซเรือนกระจกที่กักเก็บได้: 
-                        <span class="stat-value co2">${tree["Sequestration_kgCO2e"] || 0} kgCO₂e</span>
+                        <span class="stat-value co2">${tree["GHGSequestration_kgCO2e"] || 0} kgCO₂e</span>
                     </div>
 
                     <div class="stat-label co2">ปริมาณก๊าซเรือนกระจกที่กักเก็บได้: 
-                        <span class="stat-value co2">${tree["Sequestration_tCO2e"] || 0} tCO2e</span>
+                        <span class="stat-value co2">${tree["GHGSequestration_tCO2e"] || 0} tCO2e</span>
                     </div>
                     <!-- รูปภาพ -->
                     <div class="popup-images">
@@ -220,12 +222,7 @@
             marker.addTo(speciesLayers[species]);
         });
 
-        // 5. Add Combined Layer Control
-        // The "collapsed: false" makes the panel permanently toggled open
-        L.control.layers(baseMaps, speciesLayers, { 
-            collapsed: false,
-            position: 'topright' 
-        }).addTo(map);
+        // 5. Layer Control removed — basemap switching is handled in the search control below
 
 
         // ==========================================
@@ -266,6 +263,18 @@ controlBox.onAdd = function () {
         ">
 
             <b style="color:#2e7d32;"><h4>ค้นหาข้อมูล</h4></b>
+
+            <label><h6>แผนที่พื้นหลัง</h6></label>
+            <select id="basemapSelect" style="
+                width:100%;
+                padding:6px;
+                border-radius:6px;
+                margin-bottom:10px;
+            ">
+                <option value="satellite">Satellite (Esri)</option>
+                <option value="google">Google Streets</option>
+                <option value="osm">OpenStreetMap</option>
+            </select>
 
             <label><h6>โซน</h6></label>
             <select id="zoneSelect" style="
@@ -316,7 +325,21 @@ setTimeout(function(){
 
     var zoneSelect = document.getElementById("zoneSelect");
     var speciesSelect = document.getElementById("speciesSelect");
+    var basemapSelect = document.getElementById("basemapSelect");
     var resetBtn = document.getElementById("resetFilter");
+
+    // -----------------------
+    // เปลี่ยน basemap
+    // -----------------------
+    basemapSelect.addEventListener("change", function(){
+        var selected = basemapSelect.value;
+        var newLayer = selected === "satellite" ? esriImagery
+                     : selected === "google"    ? googleStreets
+                     :                            osm;
+        map.removeLayer(currentBasemap);
+        map.addLayer(newLayer);
+        currentBasemap = newLayer;
+    });
 
     // -----------------------
     // เติมโซน
@@ -427,6 +450,12 @@ setTimeout(function(){
 
         zoneSelect.value = "";
         speciesSelect.value = "";
+
+        // รีเซ็ต basemap กลับเป็น Satellite (Esri)
+        basemapSelect.value = "satellite";
+        map.removeLayer(currentBasemap);
+        map.addLayer(esriImagery);
+        currentBasemap = esriImagery;
 
         applyFilter();
 

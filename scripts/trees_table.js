@@ -37,10 +37,7 @@ $(document).ready(function() {
             {
                 searchable: false, // Disable searching
                 orderable: false, // Disable ordering
-                targets: -1 // Disable search and ordering on the image thumbnail column (last column: index -1)
-            },
-            {
-                searchable: false, orderable: false, target: -2
+                targets: 6 // Disable search and ordering on the image thumbnail column only (index 6, last column)
             }
         ],
         data: treesData, // Use the treesData array as the data source for the table
@@ -100,8 +97,8 @@ $(document).ready(function() {
                                 <tr><th>มวลชีวภาพใต้ดิน (kg)</th><td>${rowData.BGB}</td></tr> \
                                 <tr><th>มวลชีวภาพรวม (kg)</th><td>${rowData.TotalBiomass_kg}</td></tr> \
                                 <tr><th>ปริมาณคาร์บอน (kgC)</th><td>${rowData.CarbonStock_kgC}</td></tr> \
-                                <tr><th>ปริมาณก๊าซเรือนกระจกที่กักเก็บได้ (kgCO₂e)</th><td>${rowData["Sequestration_kgCO2e"]}</td></tr> \
-                                <tr><th>ปริมาณก๊าซเรือนกระจกที่กักเก็บได้ (tCO₂e)</th><td>${rowData["Sequestration_tCO2e"]}</td></tr> \
+                                <tr><th>ปริมาณก๊าซเรือนกระจกที่กักเก็บได้ (kgCO₂e)</th><td>${rowData["GHGSequestration_kgCO2e"]}</td></tr> \
+                                <tr><th>ปริมาณก๊าซเรือนกระจกที่กักเก็บได้ (tCO₂e)</th><td>${rowData["GHGSequestration_tCO2e"]}</td></tr> \
                             </table>
                         `;
 
@@ -123,12 +120,14 @@ $(document).ready(function() {
                     return row.name_th + ' (' + row.name_en + ')';
                 }
             },
+            
             { data: 'type', title: 'ประเภทต้นไม้', titleAttr: 'Tree Type' },
-            { data: 'height', title: 'ความสูง<br/>(เมตร)', titleAttr: 'Height (m)', className: 'dt-center', 
+            { data: 'TotalBiomass_kg', title: 'มวลชีวภาพรวม<br/>(kg)', titleAttr: 'Total Biomass (kg)', className: 'dt-center', 
                 render: $.fn.dataTable.render.number(',', '.', 2) },
-            { data: 'DBH_cm', title: 'เส้นผ่านศูนย์กลาง<br/>(ซม.)', titleAttr: 'DBH (cm)', className: 'dt-center', 
-                render: $.fn.dataTable.render.number(',', '.', 2) },    
-                
+            { data: 'CarbonStock_kgC', title: 'ปริมาณคาร์บอน<br/>(kgC)', titleAttr: 'Carbon Stock (kgC)', className: 'dt-center', 
+                render: $.fn.dataTable.render.number(',', '.', 2) },
+            { data: 'GHGSequestration_kgCO2e', title: 'ปริมาณก๊าซเรือนกระจกที่กักเก็บได้<br/>(kgCO₂e)', titleAttr: 'GHG Sequestration (kgCO₂e)', className: 'dt-center', 
+                render: $.fn.dataTable.render.number(',', '.', 2) },
             {
                 // Custom render function to display image thumbnails
                 // This column will use the 'image_urls' property of each tree object
